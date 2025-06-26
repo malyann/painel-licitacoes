@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel de Licitações - PWA</title>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #121212; color: #fff; }
+    header { padding: 20px; text-align: center; background: #1f1f1f; font-size: 1.5em; color: #00bfff; }
+    main { padding: 20px; }
+    .btn { display: block; background: #00bfff; color: white; padding: 15px; margin: 10px 0; text-align: center; border-radius: 8px; text-decoration: none; font-size: 16px; }
+    .btn:hover { background: #009fd4; }
+    input { width: 100%; padding: 10px; margin-bottom: 15px; border: none; border-radius: 8px; font-size: 16px; }
+    ul { list-style: none; padding: 0; }
+    li { background: #1f1f1f; padding: 10px; margin-bottom: 10px; border-radius: 6px; }
+    footer { text-align: center; padding: 10px; font-size: 0.9em; color: #999; }
+  </style>
+</head>
+<body>
+  <header>📲 Painel de Licitações - Informática</header>
+  <main>
+    <a class="btn" href="https://www.gov.br/compras/pt-br" target="_blank">🧾 Compras.gov.br</a>
+    <a class="btn" href="https://pncp.gov.br/app/consultas/v5/consulta-licitacoes" target="_blank">📋 PNCP</a>
+    <a class="btn" href="https://www.licitacoes-e.com.br" target="_blank">🏛 Licitações-e</a>
+    <a class="btn" href="https://paineldeprecos.planejamento.gov.br/" target="_blank">📊 Painel de Preços</a>
+    <a class="btn" href="https://t.me/licitacoes_tech_bot" target="_blank">🤖 Bot do Telegram</a>
+    <a class="btn" href="Planilha_Licitacoes_Informatica.xlsx" download>📥 Baixar Planilha Excel</a>
+
+    <h3>🔍 Buscar licitação salva:</h3>
+    <input type="text" id="busca" placeholder="Digite uma palavra-chave..." onkeyup="filtrar()">
+
+    <h3>🧾 Histórico de Licitações:</h3>
+    <ul id="historico"></ul>
+  </main>
+  <footer>© Desenvolvido com 💡 por ChatGPT</footer>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+
+    const historico = JSON.parse(localStorage.getItem('licitacoes')) || [
+      "Compra de notebooks Dell - RS",
+      "Aquisição de toner para impressora HP - SP",
+      "Serviço de manutenção em rede local - DF"
+    ];
+    const ul = document.getElementById('historico');
+    historico.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item;
+      ul.appendChild(li);
+    });
+
+    function filtrar() {
+      const termo = document.getElementById('busca').value.toLowerCase();
+      const lis = ul.getElementsByTagName('li');
+      for (let i = 0; i < lis.length; i++) {
+        const texto = lis[i].textContent.toLowerCase();
+        lis[i].style.display = texto.includes(termo) ? "" : "none";
+      }
+    }
+  </script>
+</body>
+</html>
